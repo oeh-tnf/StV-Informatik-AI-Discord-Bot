@@ -1,0 +1,11 @@
+[Unit]
+Description=StV Informatik-AI Discord Bot https://github.com/oeh-tnf/StV-Informatik-AI-Discord-Bot
+
+[Service]
+ExecStart=/bin/sh -c 'cd /home/stv-informatik/StV-Informatik-AI-Discord-Bot/ && source bin/activate && python3 main.py'
+Restart=on-failure
+User=stv-informatik
+Group=stv-informatik
+
+[Install]
+WantedBy=default.target
