@@ -1,3 +1,4 @@
+import sys
 import discord
 from discord.ext import commands
 
@@ -30,6 +31,7 @@ role_msg_id = 756093869187137537
 @bot.event
 async def on_ready():
     print("Ready")
+    sys.stdout.flush()
     game = discord.Game("with roles")
     await bot.change_presence(status=discord.Status.online, activity=game)
 
