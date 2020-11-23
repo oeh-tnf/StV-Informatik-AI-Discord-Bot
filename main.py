@@ -9,7 +9,6 @@ def read_token():
     
 intents = discord.Intents.default()
 intents.members = True
-intents.presences = True
 
 token = read_token()
 bot = commands.Bot(command_prefix='.')
