@@ -11,7 +11,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 token = read_token()
-bot = commands.Bot(command_prefix='.')
+bot = commands.Bot(command_prefix='.', intents=intents)
 bot.remove_command('help')
 roles_dict = {"1. Semester": '1️⃣'.encode('unicode-escape').decode('ASCII'),
               "2. Semester": '2️⃣'.encode('unicode-escape').decode('ASCII'),
