@@ -24,7 +24,7 @@ roles_dict = {
 "Alumni": '🎓'
 }
 ROLES = {emoji.encode('unicode-escape').decode('ASCII'): role 
-         for emoji, role in roles_dict.items()}  # emoji to role lookup
+         for role, emoji in roles_dict.items()}  # emoji to role lookup
 
 ROLE_MSG_ID = 756093869187137537
 
