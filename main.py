@@ -1,29 +1,24 @@
 import sys
 import discord
 from discord.ext import commands
-
-def read_token():
-    with open("token.txt", 'r') as f:
-        lines = f.readlines()
-        return lines[0].strip()
     
 intents = discord.Intents.default()
 intents.members = True
 
-token = read_token()
+token = open("token.txt", 'r').readlines(1)[0].strip()
 bot = commands.Bot(command_prefix='.', intents=intents)
 bot.remove_command('help')
-roles_dict = {"1. Semester": '1️⃣'.encode('unicode-escape').decode('ASCII'),
-              "2. Semester": '2️⃣'.encode('unicode-escape').decode('ASCII'),
-              "3. Semester": '3️⃣'.encode('unicode-escape').decode('ASCII'),
-              "4. Semester": '4️⃣'.encode('unicode-escape').decode('ASCII'),
-              "5. Semester": '5️⃣'.encode('unicode-escape').decode('ASCII'),
-              "6. Semester": '6️⃣'.encode('unicode-escape').decode('ASCII'),
-              "Informatik": '🇮'.encode('unicode-escape').decode('ASCII'),
-              "AI": '🇦'.encode('unicode-escape').decode('ASCII'),
-              "Bachelor": '🇧'.encode('unicode-escape').decode('ASCII'),
-              "Master": '🇲'.encode('unicode-escape').decode('ASCII'),
-              "∞.Semester": '♾️'.encode('unicode-escape').decode('ASCII')}
+roles_dict = {"1. Semester": '1️⃣',
+              "2. Semester": '2️⃣',
+              "3. Semester": '3️⃣',
+              "4. Semester": '4️⃣',
+              "5. Semester": '5️⃣',
+              "6. Semester": '6️⃣',
+              "Informatik": '🇮',
+              "AI": '🇦',
+              "Bachelor": '🇧',
+              "Master": '🇲',
+              "∞.Semester": '♾️'}
 
 role_msg_id = 756093869187137537
 
@@ -57,7 +52,7 @@ async def on_raw_reaction_add(payload):
     a_emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
     if msg_id == role_msg_id:
         for role_name, emoji in roles_dict.items():
-            if emoji == a_emoji:
+            if emoji.encode('unicode-escape').decode('ASCII') == a_emoji:
                 role = discord.utils.get(guild.roles, name=role_name)
                 await member.add_roles(role, atomic=True)
 
