@@ -1,16 +1,11 @@
 import sys
 import discord
 from discord.ext import commands
-
-def read_token():
-    with open("token.txt", 'r') as f:
-        lines = f.readlines()
-        return lines[0].strip()
     
 intents = discord.Intents.default()
 intents.members = True
 
-token = read_token()
+token = open("token.txt", 'r').readlines(1)[0].strip()
 bot = commands.Bot(command_prefix='.', intents=intents)
 bot.remove_command('help')
 roles_dict = {
@@ -58,7 +53,7 @@ def add_or_remove(payload, mode):
     member = bot.get_guild(payload.guild_id).get_member(payload.user_id)
     msg_id = payload.message_id
     a_emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
-    if msg_id == role_msg_id and a_emoji in ROLES:
+    if msg_id == ROLE_MSG_ID and a_emoji in ROLES:
         role_name = ROLES[a_emoji]
         role = discord.utils.get(guild.roles, name=role_name)
         if mode == "add":
