@@ -13,21 +13,25 @@ intents.members = True
 token = read_token()
 bot = commands.Bot(command_prefix='.', intents=intents)
 bot.remove_command('help')
-roles_dict = {"1. Semester": '1️⃣'.encode('unicode-escape').decode('ASCII'),
-              "2. Semester": '2️⃣'.encode('unicode-escape').decode('ASCII'),
-              "3. Semester": '3️⃣'.encode('unicode-escape').decode('ASCII'),
-              "4. Semester": '4️⃣'.encode('unicode-escape').decode('ASCII'),
-              "5. Semester": '5️⃣'.encode('unicode-escape').decode('ASCII'),
-              "6. Semester": '6️⃣'.encode('unicode-escape').decode('ASCII'),
-              "Informatik": '🇮'.encode('unicode-escape').decode('ASCII'),
-              "AI": '🇦'.encode('unicode-escape').decode('ASCII'),
-              "Bachelor": '🇧'.encode('unicode-escape').decode('ASCII'),
-              "Master": '🇲'.encode('unicode-escape').decode('ASCII'),
-              "∞.Semester": '♾️'.encode('unicode-escape').decode('ASCII'),
-              "PhD": '🥼'.encode('unicode-escape').decode('ASCII'),
-              "Alumni": '🎓'.encode('unicode-escape').decode('ASCII')}
+roles_dict = {
+"1. Semester": '1️⃣',
+"2. Semester": '2️⃣',
+"3. Semester": '3️⃣',
+"4. Semester": '4️⃣',
+"5. Semester": '5️⃣',
+"6. Semester": '6️⃣',
+"Informatik": '🇮',
+"AI": '🇦',
+"Bachelor": '🇧',
+"Master": '🇲',
+"∞.Semester": '♾️',
+"PhD": '🥼',
+"Alumni": '🎓'
+}
+ROLES = {emoji.encode('unicode-escape').decode('ASCII'): role 
+         for emoji, role in roles_dict.items()}  # emoji to role lookup
 
-role_msg_id = 756093869187137537
+ROLE_MSG_ID = 756093869187137537
 
 #######################################################################################################################
 # EVENTS #
@@ -40,7 +44,6 @@ async def on_ready():
     game = discord.Game("with roles")
     await bot.change_presence(status=discord.Status.online, activity=game)
 
-
 @bot.event
 async def on_member_join(member):
     await member.send(f"Welcome to the Informatik & AI Discord Server! Here you can find other students of the JKU Linz who are also studying Informatik or AI from your and other semesters. Although the server is primarily aimed at JKU students, everyone is welcome.\n\n"
@@ -51,30 +54,25 @@ async def on_member_join(member):
                       f"If you need some help or there are problems with the server (or with someone on the server), don't be afraid to someone from @ÖH.\n\n"
                       f"If you want to assign yourself a role go to this message and click the appropriate reactions: https://discordapp.com/channels/370458917073059841/497699283772899348/756093869187137537 ")
 
-@bot.event
-async def on_raw_reaction_add(payload):
-    guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
+def add_or_remove(payload, mode):
+    member = bot.get_guild(payload.guild_id).get_member(payload.user_id)
     msg_id = payload.message_id
     a_emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
-    if msg_id == role_msg_id:
-        for role_name, emoji in roles_dict.items():
-            if emoji == a_emoji:
-                role = discord.utils.get(guild.roles, name=role_name)
-                await member.add_roles(role, atomic=True)
+    if msg_id == role_msg_id and a_emoji in ROLES:
+        role_name = ROLES[a_emoji]
+        role = discord.utils.get(guild.roles, name=role_name)
+        if mode == "add":
+            await member.add_roles(role, atomic=True)
+        elif mode == "remove":
+            await member.remove_roles(role, atomic=True)
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    add_or_delete(payload, mode="add")
 
 @bot.event
 async def on_raw_reaction_remove(payload):
-    guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
-    msg_id = payload.message_id
-    a_emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
-    if msg_id == role_msg_id:
-        for role_name, emoji in roles_dict.items():
-            if emoji == a_emoji:
-                role = discord.utils.get(guild.roles, name=role_name)
-                await member.remove_roles(role, atomic=True)
+    add_or_delete(payload, mode="remove")
+
 
 bot.run(token)
-
-
