@@ -23,7 +23,9 @@ roles_dict = {"1. Semester": '1️⃣'.encode('unicode-escape').decode('ASCII'),
               "AI": '🇦'.encode('unicode-escape').decode('ASCII'),
               "Bachelor": '🇧'.encode('unicode-escape').decode('ASCII'),
               "Master": '🇲'.encode('unicode-escape').decode('ASCII'),
-              "∞.Semester": '♾️'.encode('unicode-escape').decode('ASCII')}
+              "∞.Semester": '♾️'.encode('unicode-escape').decode('ASCII'),
+              "PhD:": '🅿️'.encode('unicode-escape').decode('ASCII'),
+              "Alumni": '🅰️'.encode('unicode-escape').decode('ASCII')}
 
 role_msg_id = 756093869187137537
 
