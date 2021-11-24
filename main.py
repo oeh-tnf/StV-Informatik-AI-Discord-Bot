@@ -8,19 +8,23 @@ intents.members = True
 token = open("token.txt", 'r').readlines(1)[0].strip()
 bot = commands.Bot(command_prefix='.', intents=intents)
 bot.remove_command('help')
-roles_dict = {"1. Semester": '1️⃣',
-              "2. Semester": '2️⃣',
-              "3. Semester": '3️⃣',
-              "4. Semester": '4️⃣',
-              "5. Semester": '5️⃣',
-              "6. Semester": '6️⃣',
-              "Informatik": '🇮',
-              "AI": '🇦',
-              "Bachelor": '🇧',
-              "Master": '🇲',
-              "∞.Semester": '♾️'}
+roles_dict = {
+"1. Semester": '1️⃣',
+"2. Semester": '2️⃣',
+"3. Semester": '3️⃣',
+"4. Semester": '4️⃣',
+"5. Semester": '5️⃣',
+"6. Semester": '6️⃣',
+"Informatik": '🇮',
+"AI": '🇦',
+"Bachelor": '🇧',
+"Master": '🇲',
+"∞.Semester": '♾️',
+}
 
-role_msg_id = 756093869187137537
+roles = set(map(lambda s: s.encode('unicode-escape').decode('ASCII'), roles.values()))
+
+ROLE_MSG_ID = 756093869187137537
 
 #######################################################################################################################
 # EVENTS #
@@ -44,30 +48,25 @@ async def on_member_join(member):
                       f"If you need some help or there are problems with the server (or with someone on the server), don't be afraid to someone from @ÖH.\n\n"
                       f"If you want to assign yourself a role go to this message and click the appropriate reactions: https://discordapp.com/channels/370458917073059841/497699283772899348/756093869187137537 ")
 
+def add_or_remove(payload, mode):
+    member = bot.get_guild(payload.guild_id).get_member(payload.user_id)
+    emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
+    if payload.message_id == ROLE_MSG_ID and emoji in roles:
+        role = discord.utils.get(guild.roles, name=emoji)
+        if mode == "add":
+            await member.add_roles(role, atomic=True)
+        elif mode == "remove":
+            await member.remove_roles(role, atomic=True)
+
+
 @bot.event
 async def on_raw_reaction_add(payload):
-    guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
-    msg_id = payload.message_id
-    a_emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
-    if msg_id == role_msg_id:
-        for role_name, emoji in roles_dict.items():
-            if emoji.encode('unicode-escape').decode('ASCII') == a_emoji:
-                role = discord.utils.get(guild.roles, name=role_name)
-                await member.add_roles(role, atomic=True)
+    add_or_remove(payload, "add")
+
 
 @bot.event
 async def on_raw_reaction_remove(payload):
-    guild = bot.get_guild(payload.guild_id)
-    member = guild.get_member(payload.user_id)
-    msg_id = payload.message_id
-    a_emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
-    if msg_id == role_msg_id:
-        for role_name, emoji in roles_dict.items():
-            if emoji == a_emoji:
-                role = discord.utils.get(guild.roles, name=role_name)
-                await member.remove_roles(role, atomic=True)
+    add_or_remove(payload, "remove")
+
 
 bot.run(token)
-
-
