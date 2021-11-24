@@ -19,6 +19,8 @@ roles_dict = {
 "AI": '🇦',
 "Bachelor": '🇧',
 "Master": '🇲',
+"PhD": '🇵',
+"Alumni": '🎓',
 "∞.Semester": '♾️',
 }
 
