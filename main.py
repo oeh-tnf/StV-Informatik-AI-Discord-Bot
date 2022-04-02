@@ -21,7 +21,9 @@ roles_dict = {
 "Master": '🇲',
 "∞.Semester": '♾️',
 "PhD": '🥼',
-"Alumni": '🎓'
+"Alumni": '🎓',
+"Informatik-Cafe": '🫖',
+"AI-Cafe": '☕'
 }
 ROLES = {emoji.encode('unicode-escape').decode('ASCII'): role 
          for role, emoji in roles_dict.items()}  # emoji to role lookup
