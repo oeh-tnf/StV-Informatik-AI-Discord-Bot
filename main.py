@@ -51,7 +51,7 @@ async def on_member_join(member):
                       f"If you need some help or there are problems with the server (or with someone on the server), don't be afraid to someone from @ÖH.\n\n"
                       f"If you want to assign yourself a role go to this message and click the appropriate reactions: https://discordapp.com/channels/370458917073059841/497699283772899348/756093869187137537 ")
 
-def add_or_remove(payload, mode):
+async def add_or_delete(payload, mode):
     member = bot.get_guild(payload.guild_id).get_member(payload.user_id)
     msg_id = payload.message_id
     a_emoji = payload.emoji.name.encode('unicode-escape').decode('ASCII')
