@@ -23,7 +23,7 @@ roles_dict = {"1. Semester": '1️⃣'.encode('unicode-escape').decode('ASCII'),
               "AI": '🇦'.encode('unicode-escape').decode('ASCII'),
               "Bachelor": '🇧'.encode('unicode-escape').decode('ASCII'),
               "Master": '🇲'.encode('unicode-escape').decode('ASCII'),
-              "∞.Semester": '♾️'.encode('unicode-escape').decode('ASCII'),
+              "∞. Semester": '♾️'.encode('unicode-escape').decode('ASCII'),
               "PhD": '🥼'.encode('unicode-escape').decode('ASCII'),
               "Alumni": '🎓'.encode('unicode-escape').decode('ASCII'),
               "Informatik-Cafe": '🫖'.encode('unicode-escape').decode('ASCII'),
@@ -79,5 +79,3 @@ async def on_raw_reaction_remove(payload):
                 await member.remove_roles(role, atomic=True)
 
 bot.run(token)
-
-
